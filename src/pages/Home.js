@@ -1,10 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import NavBar from "../components/NavBar";
 const Home = () => {
   return (
     <div>
+      <NavBar />
       Home
-      <Link to="/query">React-Query</Link>
     </div>
   );
 };
