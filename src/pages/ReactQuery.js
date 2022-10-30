@@ -1,23 +1,19 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import axios from "axios";
-import { useQuery } from "react-query";
-
-const url = "http://localhost:4000/details";
-
-const getDetails = () => axios.get(url);
+import useDetails from "../hooks/useDetailsData";
 
 const ReactQuery = () => {
   // cache time default is 5 min
-  const { data, isLoading, error, isError, isFetching } = useQuery(
-    "details",
-    getDetails
-    // {
-    //   cacheTime: 5000,
-    // }
+  const onSuccess = () => {
+    console.log("onSuccess");
+  };
+  const onError = () => {
+    console.log("onError");
+  };
+  const { data, isLoading, error, isError, isFetching } = useDetails(
+    onSuccess,
+    onError
   );
-
-  console.log({ isFetching, isLoading }, "isFetching");
 
   if (isLoading) return <h2>Loading......</h2>;
   if (isError) return <h2>{error?.message}</h2>;
