@@ -2,19 +2,16 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import axios from "axios";
 import { useQuery } from "react-query";
-
+import { useNavigate } from "react-router-dom";
 const url = "http://localhost:4000/details";
 
 const getDetails = () => axios.get(url);
 
 const ReactQuery = () => {
-  // cache time default is 5 min
+  const navigate = useNavigate();
   const { data, isLoading, error, isError, isFetching } = useQuery(
     "details",
     getDetails
-    // {
-    //   cacheTime: 5000,
-    // }
   );
 
   console.log({ isFetching, isLoading }, "isFetching");
@@ -31,6 +28,9 @@ const ReactQuery = () => {
           <div key={item?.id}>
             {item?.id}
             <p>{item?.title}</p>
+            <button onClick={() => navigate(`/single/${item?.id}`)}>
+              details
+            </button>
           </div>
         ))}
     </div>
