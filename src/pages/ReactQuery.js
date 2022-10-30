@@ -14,26 +14,36 @@ const ReactQuery = () => {
   // 4 refetch on windowFocus its true for default anytime the window changes sizes or loose focus it refetch
   // 5 refetch at interval it helps to fetch data at interval
   // 6 the interval refetch stops if window looses focus so refetchIntervalInBackground should be set too true
-  const { data, isLoading, error, isError } = useQuery("details", getDetails, {
+  // 7 prevents fetching or fetching of data on mount
+  const {
+    data: { data },
+    isLoading,
+    error,
+    isError,
+    refetch,
+    isFetching,
+  } = useQuery("details", getDetails, {
     // cacheTime: 5000,
     // staleTime: 30000,
     // refetchOnMount:true,
     // refetchOnWindowFocus:true,
     // refetchInterval: 3000,
     // refetchIntervalInBackground:true;
+    enabled: false,
   });
 
   // console.log({ isFetching, isLoading }, "isFetching");
-
-  if (isLoading) return <h2>Loading......</h2>;
+  // isFetching help us to keep tract whether data is fetching or not
+  if (isLoading || isFetching) return <h2>Loading......</h2>;
   if (isError) return <h2>{error?.message}</h2>;
 
   return (
     <div>
       <NavBar />
       ReactQuery
+      <button onClick={refetch}>Fetch details</button>
       {data &&
-        data?.data.slice(0, 5).map((item) => (
+        data?.slice(0, 5).map((item) => (
           <div key={item?.id}>
             {item?.id}
             <p>{item?.title}</p>
