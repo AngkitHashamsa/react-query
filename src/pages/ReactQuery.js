@@ -8,16 +8,21 @@ const url = "http://localhost:4000/details";
 const getDetails = () => axios.get(url);
 
 const ReactQuery = () => {
-  // cache time default is 5 min
-  const { data, isLoading, error, isError, isFetching } = useQuery(
-    "details",
-    getDetails
-    // {
-    //   cacheTime: 5000,
-    // }
-  );
+  const onSuccess = (data) => {
+    console.log("success", data);
+  };
+  const onError = () => {
+    console.log("error");
+  };
 
-  console.log({ isFetching, isLoading }, "isFetching");
+  const { data, isLoading, error, isError, refetch } = useQuery(
+    "details",
+    getDetails,
+    {
+      onSuccess,
+      onError,
+    }
+  );
 
   if (isLoading) return <h2>Loading......</h2>;
   if (isError) return <h2>{error?.message}</h2>;
@@ -26,8 +31,9 @@ const ReactQuery = () => {
     <div>
       <NavBar />
       ReactQuery
+      <button onClick={refetch}>Fetch details</button>
       {data &&
-        data?.data.slice(0, 5).map((item) => (
+        data?.data?.slice(0, 5).map((item) => (
           <div key={item?.id}>
             {item?.id}
             <p>{item?.title}</p>
