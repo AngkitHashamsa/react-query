@@ -3,21 +3,19 @@ import NavBar from "../components/NavBar";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-const url = "http://localhost:4000/details";
-
-const getDetails = () => axios.get(url);
-
+const urlDetail = "http://localhost:4000/details";
+const bodyUrl = "http://localhost:4000/body";
+const getDetails = () => axios.get(urlDetail);
+const getBody = () => axios.get(bodyUrl);
 const ReactQuery = () => {
   // cache time default is 5 min
   const { data, isLoading, error, isError, isFetching } = useQuery(
     "details",
     getDetails
-    // {
-    //   cacheTime: 5000,
-    // }
   );
 
-  console.log({ isFetching, isLoading }, "isFetching");
+  const { data: body } = useQuery("boyd", () => getBody());
+  console.log({ body, isLoading }, "isFetching");
 
   if (isLoading) return <h2>Loading......</h2>;
   if (isError) return <h2>{error?.message}</h2>;
